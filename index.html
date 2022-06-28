@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nimen</title>
+        <script src="nimen.js"></script>
+        <style>
+            nav {
+                display: flex;
+                background-color: brown;
+            }
+            .logo {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <span class="logo">NIMEN</span>
+        </nav>
+
+        <div class="container">
+
+            <br>
+
+            <form>
+                <textarea id="game_textarea"></textarea>
+                <br>
+                <label for="command_area">Command: </label>
+                <input type="text" id="command_area" name="command_area" placeholder="> ">
+                <button type="button" onclick="sendCommand()">»</button>
+            </form>
+
+
+        </div>
+        
+        <script>
+            
+            Module.onRuntimeInitialized = () => {
+
+                Module.ccall('generate_world', null, null, null);
+            }
+
+            function sendCommand () {
+                var new_command = document.getElementById("command_area").value;
+                Module.ccall('send_command', null, ['string'], [new_command]);
+                var command = Module.ccall('see_command', 'string', null, null);
+                console.log(command);
+            }
+        </script>
+    </body>
+</html>

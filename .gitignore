@@ -1,0 +1,4 @@
+*.backup
+*.exe
+nimen.js
+nimen.wasm
