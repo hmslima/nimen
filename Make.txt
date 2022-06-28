@@ -1,3 +1,3 @@
-em++ nimen.cpp functions/command.cpp classes/universal.cpp classes/Place.cpp classes/Thing.cpp classes/Environment.cpp classes/Character.cpp classes/Building.cpp -o nimen.js -sEXPORTED_RUNTIME_METHODS=ccall
+em++ nimen.cpp functions/command.cpp functions/texts.cpp classes/universal.cpp classes/Place.cpp classes/Thing.cpp classes/Environment.cpp classes/Character.cpp classes/Building.cpp -o nimen.js -sEXPORTED_RUNTIME_METHODS=ccall
 
-g++ nimen.cpp functions/command.cpp classes/universal.cpp classes/Place.cpp classes/Thing.cpp classes/Environment.cpp classes/Character.cpp classes/Building.cpp -o nimen.exe
+g++ nimen.cpp functions/command.cpp functions/texts.cpp classes/universal.cpp classes/Place.cpp classes/Thing.cpp classes/Environment.cpp classes/Character.cpp classes/Building.cpp -o nimen.exe

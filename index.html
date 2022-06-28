@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Nimen</title>
         <script src="nimen.js"></script>
         <style>
@@ -23,30 +24,57 @@
 
             <br>
 
-            <form>
-                <textarea id="game_textarea"></textarea>
-                <br>
-                <label for="command_area">Command: </label>
-                <input type="text" id="command_area" name="command_area" placeholder="> ">
-                <button type="button" onclick="sendCommand()">»</button>
-            </form>
+            <div id="game_textarea"></div>
+            <br>
+            <label for="command_area">Command: </label>
+            <input type="text" id="command_area" name="command_area" placeholder="> ">
+            <button type="button" onclick="sendCommand()" id="play_button">»</button>
 
 
         </div>
         
         <script>
-            
+
             Module.onRuntimeInitialized = () => {
 
                 Module.ccall('generate_world', null, null, null);
             }
 
             function sendCommand () {
-                var new_command = document.getElementById("command_area").value;
-                Module.ccall('send_command', null, ['string'], [new_command]);
-                var command = Module.ccall('see_command', 'string', null, null);
-                console.log(command);
+
+                var new_command = document.getElementById("command_area").value.toLowerCase();
+
+                // Check if this is anything we cannot do only in the front-end
+                if (new_command == "clear") {
+                    document.getElementById("game_textarea").innerHTML = "";
+                }
+                else {
+                    Module.ccall('send_command', null, ['string'], [new_command]);
+                    var rawcommand = Module.ccall('see_raw_command', 'string', null, null);
+                    var command = Module.ccall('see_command', 'string', null, null);
+                    var target = Module.ccall('see_target', 'string', null, null);
+                    var message = Module.ccall('game_output', 'string', null, null);
+                    document.getElementById("game_textarea").innerHTML += "<br>" + message;
+
+                    // Delete this when everything is tested
+                    console.log("Command sent by JavaScript: [" + new_command + "]");
+                    console.log("Raw command that cam from the C++ code: [" + rawcommand + "]");
+                    console.log("Command name that came from C++: " + command);
+                    console.log("Command's argument that came from C++: " + target)
+                    console.log("Message that came from C++: [" + message + "]");
+                }
             }
+
+            function getKeys() {
+                document.addEventListener('keyup', event => {
+                    if (event.keyCode == 13) {
+                        sendCommand ();
+                    }
+                });
+            }
+
+            getKeys();
+
         </script>
     </body>
 </html>
