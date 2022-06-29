@@ -6,18 +6,103 @@
         <title>Nimen</title>
         <script src="nimen.js"></script>
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                background-color: #757575;
+            }
             nav {
                 display: flex;
-                background-color: brown;
+                padding-top: 0.3rem;
+                padding-bottom: 0.3rem;
+                justify-content: space-between;
+                background-color: #343a40;
+            }
+            ul {
+                list-style-position: inside;
+            }
+            ul li ul {
+                padding-left: 1rem;
             }
             .logo {
+                color: white;
                 font-weight: bold;
+                font-size: 1.5rem;
+            }
+            .container {
+                margin: auto;
+                width: 80%;
+            }
+            .red {
+                color: red;
+            }
+            #game_textarea {
+                margin: auto;
+                overflow: auto;
+                padding: 0.5rem 5rem;
+                height: 80vh;
+                background-color: #DFE39E;
+            }
+            #command_area {
+                width: 80%;
+                height: 1.5rem;
+                padding-left: 1rem;
+            }
+            #play_button {
+                font-weight: bold;
+                width: 2rem;
+                height: 1.7rem;
+                background-color: 79C65A;
+            }
+            #presentation {
+                display: none;
+            }
+
+            .ingame_title {
+                font-size: 3rem;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .ingame_centertext {
+                text-align: center;
+            }
+
+            @media only screen and (max-width: 1000px) {
+                .container {
+                    width: 90%;
+                }
+                #game_textarea {
+                    padding: 0.5rem 3rem;
+                }
+            }
+            @media only screen and (max-width: 700px) {
+                .ingame_title {
+                    font-size: 2rem;
+                }
+                #game_textarea {
+                    padding: 0.5rem 1rem;
+                }
+            }
+            @media only screen and (max-width: 460px) {
+                .ingame_title {
+                    font-size: 1.5rem;
+                }
+            }
+            @media only screen and (max-width: 350px) {
+                .ingame_title {
+                    font-size: 1rem;
+                }
             }
         </style>
     </head>
     <body>
         <nav>
-            <span class="logo">NIMEN</span>
+            <div class="container">
+                <span class="logo">NIMEN</span>
+            </div>
         </nav>
 
         <div class="container">
@@ -26,27 +111,57 @@
 
             <div id="game_textarea"></div>
             <br>
-            <label for="command_area">Command: </label>
-            <input type="text" id="command_area" name="command_area" placeholder="> ">
+            <input type="text" id="command_area" name="command_area">
             <button type="button" onclick="sendCommand()" id="play_button">»</button>
 
+        </div>
 
+        <div id="presentation">
+            <div class="ingame_title">`•.,¸¸,.•´¯ NIMEN ¯`•.,¸¸,.•´</div>
+
+            <br><br>
+            
+            <div class="ingame_centertext">
+                <span style="font-style: italic;">This is a text-based adventure game in which you can be anything, 
+                a hero, a villain, or someone who lives their own life.</span>
+
+                <br><br>
+
+                “Nimen” means “nobody” in Sambahsa-Mundialect, this is the name of 
+                the game because your character starts as a nobody, your character 
+                isn't the choosen one, doesn't have a special talent, is not 
+                posseded by the strongest spirit/demon, however can become anything 
+                in this game.
+            </div>
+
+            <br><br>
+
+            <h2>Here is the list of useful commands:</h2>
+
+            <ul>
+                <li><b>start</b> – Start a new game</li>
+                <li><b>help</b> – See the full list of commands</li>
+            </ul>
+
+            <br>
+
+            <p class="red">This game is still in development, this is just a pre-alpha.</p>
         </div>
         
         <script>
+            var game_textarea = document.getElementById("game_textarea");
+            var game_commandarea = document.getElementById("command_area");
 
             Module.onRuntimeInitialized = () => {
-
                 Module.ccall('generate_world', null, null, null);
             }
 
             function sendCommand () {
-
-                var new_command = document.getElementById("command_area").value.toLowerCase();
+                var new_command = String(game_commandarea.value.toLowerCase());
 
                 // Check if this is anything we cannot do only in the front-end
                 if (new_command == "clear") {
-                    document.getElementById("game_textarea").innerHTML = "";
+                    game_textarea.innerHTML = "";
                 }
                 else {
                     Module.ccall('send_command', null, ['string'], [new_command]);
@@ -54,16 +169,28 @@
                     var command = Module.ccall('see_command', 'string', null, null);
                     var target = Module.ccall('see_target', 'string', null, null);
                     var message = Module.ccall('game_output', 'string', null, null);
-                    document.getElementById("game_textarea").innerHTML += "<br>" + message;
+                    game_textarea.innerHTML += "<br>" + message;
 
                     // Delete this when everything is tested
+                    console.log("----------------------------")
                     console.log("Command sent by JavaScript: [" + new_command + "]");
                     console.log("Raw command that cam from the C++ code: [" + rawcommand + "]");
                     console.log("Command name that came from C++: " + command);
                     console.log("Command's argument that came from C++: " + target)
                     console.log("Message that came from C++: [" + message + "]");
                 }
+
+                // Clears the input text area
+                game_commandarea.value = "";
+
+                // Automatically scrolls the game area
+                game_textarea.scrollTo(0, game_textarea.scrollHeight);
             }
+
+            function writePresentation() {
+                game_textarea.innerHTML += document.getElementById("presentation").innerHTML;
+            }
+            writePresentation();
 
             function getKeys() {
                 document.addEventListener('keyup', event => {
@@ -72,7 +199,6 @@
                     }
                 });
             }
-
             getKeys();
 
         </script>

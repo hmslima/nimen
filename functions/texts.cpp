@@ -46,13 +46,43 @@ string txt_invalid_argument (string bad_argument) {
 string txt_help () {
 
     if (game_language.compare("ptbr") == 0) {
-        return "<h2>Eis a lista de comandos</h2>";
+        return "<h2>Eis a lista de comandos</h2> \
+                <ul> \
+                    <li><b>start</b> – Iniciar un novo jogo</li> \
+                    <li><b>setlang []</b> – Mudar o idioma do jogo \
+                        <ul> \
+                            <li><b>setlang en</b> – Mudar para o inglês</li> \
+                            <li><b>setlang es</b> – Mudar para o espanhol</li> \
+                        </ul> \
+                        </li> \
+                        <li><b>clear</b> – Limpar a tela</li> \
+                </ul>";;
     }
     else if (game_language.compare("es") == 0) {
-        return "<h2>Aquí está la lista de comandos</h2>";
+        return "<h2>Aquí está la lista de comandos</h2> \
+                <ul> \
+                    <li><b>start</b> – Iniciar un nuevo juego</li> \
+                    <li><b>setlang []</b> – Cambiar el idioma del juego \
+                        <ul> \
+                            <li><b>setlang en</b> – Cambiar a inglés</li> \
+                            <li><b>setlang ptbr</b> – Cambiar a portugués brasileño</li> \
+                        </ul> \
+                        </li> \
+                        <li><b>clear</b> – Limpiar la pantalla</li> \
+                </ul>";
     }
     else {
-        return "<h2>Here is the list of commands</h2>";
+        return "<h2>Here is the list of commands</h2>\
+                <ul> \
+                    <li><b>start</b> – Start a new game</li> \
+                    <li><b>setlang []</b> – Change the game\'s language \
+                        <ul> \
+                            <li><b>setlang es</b> – Change to Spanish</li> \
+                            <li><b>setlang ptbr</b> – Change to Brazilian Portuguese</li> \
+                        </ul> \
+                        </li> \
+                        <li><b>clear</b> – Clear the screen</li> \
+                </ul>";
     }
 }
 

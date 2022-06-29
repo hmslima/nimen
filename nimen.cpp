@@ -23,8 +23,8 @@ extern "C" {
         create_characters();
     }
 
-    void EMSCRIPTEN_KEEPALIVE send_command(std::string sent_command) {
-
+    void EMSCRIPTEN_KEEPALIVE send_command(const char* sent_command) {
+       
         // Clear any garbage stored in raw_command
         raw_command.clear();
 
